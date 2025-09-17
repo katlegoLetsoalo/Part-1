@@ -9,21 +9,21 @@ This project is a simple Java console application that demonstrates user registr
 - Once registration is successful, prompts the user to log in with their chosen credentials.
 
 # Login.java
-~ Contains the business logic for validating user details.
-~ Username must contain an underscore (_) and be no longer than five characters.
-~ Password must be at least 8 characters long, with at least one uppercase letter, one number, and one special character.
-~ Cellphone number must follow the South African international format (e.g., +27831234567).
-~ Provides methods for registering a user, checking credentials, and returning login status messages.
+- Contains the business logic for validating user details.
+- Username must contain an underscore (_) and be no longer than five characters.
+- Password must be at least 8 characters long, with at least one uppercase letter, one number, and one special character.
+- Cellphone number must follow the South African international format (e.g., +27831234567).
+- Provides methods for registering a user, checking credentials, and returning login status messages.
 
 # LoginTest.java
-= JUnit 4 test class for unit testing the methods in Login.java.
+- JUnit 4 test class for unit testing the methods in Login.java.
 Includes tests for:
-= Correct and incorrect usernames.
-= Correct and incorrect passwords.
-= Correct and incorrect cellphone numbers.
-= Registration success and failure.
-= Login success and failure.
-= Getter methods (username(), password(), cellPhone(), firstName(), lastName()).
+- Correct and incorrect usernames.
+- Correct and incorrect passwords.
+- Correct and incorrect cellphone numbers.
+- Registration success and failure.
+- Login success and failure.
+- Getter methods (username(), password(), cellPhone(), firstName(), lastName()).
 
 # Purpose
 The purpose of the project is to show understanding of object-oriented programming, data validation, and unit testing in Java. It can also serve as a basic model for more complex authentication systems in real-world applications.
