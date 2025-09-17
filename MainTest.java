@@ -12,6 +12,19 @@ import static org.junit.Assert.*;
  * @author RC_Student_lab
  */
 public class MainTest {
+    //first name test
+     @Test
+    public void testFirstName() {
+        Login user = new Login("Kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertEquals("Kyle", user.firstName());
+    }
+
+    //last name test
+    @Test
+    public void testLastName() {
+        Login user = new Login("Kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertEquals("Smith", user.lastName());
+    }
     
    //username tests
     @Test
@@ -77,4 +90,5 @@ public class MainTest {
         String expected = "Username or password incorrect, please try again.";
         assertEquals(expected, user.returnloginStatus(false));
     }
+
 }
