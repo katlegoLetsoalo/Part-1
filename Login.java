@@ -45,17 +45,31 @@ public class Login {
     }
     
     //registerUser returns either error message or single success message
-    public String registerUser(){
-        if (!checkUserName()){
-            return "Username is not correctly formatted, ensure that your username contains an underscore and is no more than five characters in length.";
-        }
-        if (!checkPasswordComplexity()){
-            return "Password is not correctly formatted, ensure that your password contains at least eight characters, a capital letter, a number, and a special character.";
-        }
-        if (!checkCellPhoneNumber()){
-            return "Cell number is not correctly formatted or does not contain an international code, please correct the number and try again.";
-        }
-        return "User registered successfully!";
+    public String registerUser() {
+    StringBuilder errors = new StringBuilder();
+
+    // check username
+    if (!checkUserName()) {
+        errors.append("Username is not correctly formatted, ensure that your username contains an underscore and is no more than five characters in length.\n");
+    }
+
+    // check password
+    if (!checkPasswordComplexity()) {
+        errors.append("Password is not correctly formatted, ensure that your password contains at least eight characters, a capital letter, a number, and a special character.\n");
+    }
+
+    // check cellphone
+    if (!checkCellPhoneNumber()) {
+        errors.append("Cell number is not correctly formatted or does not contain an international code, please correct the number and try again.\n");
+    }
+
+    // if errors exist, return them
+    if (errors.length() > 0) {
+        return errors.toString().trim(); // remove last newline
+    }
+
+    // otherwise success
+    return "User registered successfully!";
     }
     
     //loginUser verifies input credentials match stored ones
@@ -79,4 +93,5 @@ public class Login {
     public String cellPhone(){return cellPhone;}
     public String firstName(){return firstName;}
     public String lastName(){return lastName;}
+
 }
