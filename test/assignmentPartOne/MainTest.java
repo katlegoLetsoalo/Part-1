@@ -12,6 +12,19 @@ import static org.junit.Assert.*;
  * @author RC_Student_lab
  */
 public class MainTest {
+    //first name test
+     @Test
+    public void testFirstName() {
+        Login user = new Login("Kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertEquals("Kyle", user.firstName());
+    }
+
+    //last name test
+    @Test
+    public void testLastName() {
+        Login user = new Login("Kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertEquals("Smith", user.lastName());
+    }
     
    //username tests
     @Test
@@ -60,6 +73,13 @@ public class MainTest {
         String expected = "Cell number is not correctly formatted or does not contain an international code, please correct the number and try again.";
         assertEquals(expected, user.registerUser());
     }
+    //Register user tests
+    @Test
+    public void testRegisterUserSuccess() {
+    Login user = new Login("Kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+    String expected = "User registered successfully!";
+    assertEquals(expected, user.registerUser());
+}
     
     //login tests
     @Test
