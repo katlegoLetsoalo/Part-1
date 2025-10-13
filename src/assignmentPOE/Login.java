@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package assignmentPartOne;
+package assignmentPOE;
 import java.util.regex.Pattern;
 /**
  *
@@ -24,13 +24,13 @@ public class Login {
         this.lastName = lastName;
     }
 
-    // Username must contain '_' and be <= 5 chars
+    // Username must contain '_' and <=5 chars
     public boolean checkUserName() {
         if (username == null) return false;
         return username.contains("_") && username.length() <= 5;
     }
 
-    // Password complexity: 8+ chars, 1 uppercase, 1 number, 1 special
+    // Password complexity: 8+ chars, 1 uppercase, 1 number, 1 special char
     public boolean checkPasswordComplexity() {
         if (password == null) return false;
         String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
@@ -44,7 +44,13 @@ public class Login {
         return Pattern.matches(regex, cellPhone);
     }
 
-    // Register user
+    // First and last name must start with uppercase letters
+    public boolean checkNameFormat(String name) {
+        if (name == null) return false;
+        return name.matches("^[A-Z][a-zA-Z]*$");
+    }
+
+    // Register user with combined error messages
     public String registerUser() {
         StringBuilder errors = new StringBuilder();
 
@@ -57,6 +63,9 @@ public class Login {
         if (!checkCellPhoneNumber()) {
             errors.append("Cell number is not correctly formatted or does not contain an international code, please correct the number and try again.\n");
         }
+        if (!checkNameFormat(firstName) || !checkNameFormat(lastName)) {
+            errors.append("First or last name is incorrectly formatted. Must start with a capital letter and contain only letters.\n");
+        }
 
         if (errors.length() > 0) {
             return errors.toString().trim();
@@ -65,7 +74,7 @@ public class Login {
         return "User registered successfully!";
     }
 
-    // Login
+    // Login user
     public boolean loginUser(String enteredUsername, String enteredPassword) {
         if (enteredUsername == null || enteredPassword == null) return false;
         return enteredUsername.equals(this.username) && enteredPassword.equals(this.password);
