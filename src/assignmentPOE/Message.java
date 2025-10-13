@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package assignmentPOE;
-
-
+ 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -57,7 +56,7 @@ public class Message {
 
     // ✅ Ensure message ≤ 250 chars
     public boolean checkMessageLength() {
-        return message.length() <= 250;
+        return message.length() >= 250;
     }
 
     public String getMessageLengthStatus() {
