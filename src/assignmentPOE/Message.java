@@ -34,12 +34,12 @@ public class Message {
         return String.valueOf(id);
     }
 
-    // ✅ Ensure message ID not more than 10 chars
+    //  Ensure message ID not more than 10 chars
     public boolean checkMessageID() {
         return messageID.length() <= 10;
     }
 
-    // ✅ Ensure recipient cell number starts with +27 and is exactly 12 characters long (+27XXXXXXXXX)
+    //  Ensure recipient cell number starts with +27 and is exactly 12 characters long (+27XXXXXXXXX)
     public boolean checkRecipientCell() {
         if (recipient == null) return false;
         return recipient.matches("^\\+27\\d{9}$");
@@ -54,9 +54,9 @@ public class Message {
         }
     }
 
-    // ✅ Ensure message ≤ 250 chars
+    //  Ensure message ≤ 250 chars
     public boolean checkMessageLength() {
-        return message.length() >= 250;
+        return message.length() <= 250;
     }
 
     public String getMessageLengthStatus() {
@@ -68,7 +68,7 @@ public class Message {
         }
     }
 
-    // ✅ Create Message Hash (first two digits of ID : total count : first and last words)
+    //  Create Message Hash (first two digits of ID : total count : first and last words)
     public String createMessageHash() {
         String[] words = message.split("\\s+");
         String firstWord = words.length > 0 ? words[0] : "";
@@ -77,7 +77,7 @@ public class Message {
         return (idPrefix + ":" + totalMessages + ":" + firstWord + lastWord).toUpperCase();
     }
 
-    // ✅ Send / Store / Discard Message
+    //  Send / Store / Discard Message
     public String sendMessageOption() {
         String[] options = {"Send", "Store", "Discard"};
         int choice = JOptionPane.showOptionDialog(
@@ -108,7 +108,7 @@ public class Message {
         }
     }
 
-    // ✅ Show message details (using JOptionPane)
+    //  Show message details (using JOptionPane)
     public void showMessageDetails() {
         String info = "Message ID: " + messageID +
                 "\nMessage Hash: " + messageHash +
@@ -117,7 +117,7 @@ public class Message {
         JOptionPane.showMessageDialog(null, info, "Message Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ✅ Store message in JSON file
+    //  Store message in JSON file
     public void storeMessage() {
         JSONObject obj = new JSONObject();
         obj.put("MessageID", messageID);
@@ -133,7 +133,7 @@ public class Message {
         }
     }
 
-    // ✅ Return list of all sent messages
+    // Return list of all sent messages
     public static String printMessages() {
         StringBuilder sb = new StringBuilder();
         for (Message msg : sentMessages) {
@@ -146,7 +146,7 @@ public class Message {
         return sb.isEmpty() ? "No messages sent yet." : sb.toString();
     }
 
-    // ✅ Return total number of sent messages
+    //  Return total number of sent messages
     public static int returnTotalMessages() {
         return totalMessages;
     }

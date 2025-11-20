@@ -4,130 +4,98 @@
  */
 package assignmentPOE;
 
-import java.util.Scanner;
-/**
- *
- * @author RC_Student_lab
- */
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+import javax.swing.JOptionPane;
 
-        System.out.println("Welcome to QuickChat\n");
+public class Main {
+
+    public static void main(String[] args) {
+        JOptionPane.showMessageDialog(null, "Welcome to QuickChat!", "QuickChat", JOptionPane.INFORMATION_MESSAGE);
 
         // === User Registration ===
         String firstName, lastName, username, password, cellPhone;
         Login user;
 
         while (true) {
-            System.out.println("=== Register a new user ===");
-
-            System.out.print("Enter first name: ");
-            firstName = scanner.nextLine().trim();
-
-            System.out.print("Enter last name: ");
-            lastName = scanner.nextLine().trim();
-
-            System.out.print("Enter username (must contain '_' and <=5 chars): ");
-            username = scanner.nextLine().trim();
-
-            System.out.print("Enter password (8+ chars, 1 uppercase, 1 number, 1 special): ");
-            password = scanner.nextLine();
-
-            System.out.print("Enter cell phone (+27XXXXXXXXX): ");
-            cellPhone = scanner.nextLine().trim();
+            firstName = JOptionPane.showInputDialog(null, "Enter First Name:", "Registration", JOptionPane.QUESTION_MESSAGE);
+            lastName = JOptionPane.showInputDialog(null, "Enter Last Name:", "Registration", JOptionPane.QUESTION_MESSAGE);
+            username = JOptionPane.showInputDialog(null, "Enter Username (must contain '_' and <=5 chars):", "Registration", JOptionPane.QUESTION_MESSAGE);
+            password = JOptionPane.showInputDialog(null, "Enter Password (8+ chars, 1 uppercase, 1 number, 1 special):", "Registration", JOptionPane.QUESTION_MESSAGE);
+            cellPhone = JOptionPane.showInputDialog(null, "Enter Cell Phone (+27XXXXXXXXX):", "Registration", JOptionPane.QUESTION_MESSAGE);
 
             user = new Login(username, password, cellPhone, firstName, lastName);
             String regMessage = user.registerUser();
-            System.out.println("\nRegistration result:");
-            System.out.println(regMessage);
+
+            JOptionPane.showMessageDialog(null, regMessage, "Registration Result", JOptionPane.INFORMATION_MESSAGE);
 
             if (regMessage.contains("successfully")) break;
-            System.out.println("Please fix the above errors and try again.\n");
+            JOptionPane.showMessageDialog(null, "Please fix the above errors and try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // === Login Loop ===
+        // === LOGIN ===
         boolean loggedIn = false;
         while (!loggedIn) {
-            System.out.println("\n=== Login ===");
-            System.out.print("Enter username: ");
-            String enteredUser = scanner.nextLine().trim();
-            System.out.print("Enter password: ");
-            String enteredPass = scanner.nextLine();
+            String enteredUser = JOptionPane.showInputDialog(null, "Enter Username:", "Login", JOptionPane.QUESTION_MESSAGE);
+            String enteredPass = JOptionPane.showInputDialog(null, "Enter Password:", "Login", JOptionPane.QUESTION_MESSAGE);
 
             loggedIn = user.loginUser(enteredUser, enteredPass);
-            System.out.println("\n" + user.returnLoginStatus(loggedIn));
-            if (!loggedIn) System.out.println("Please try again.\n");
+            JOptionPane.showMessageDialog(null, user.returnLoginStatus(loggedIn));
+
+            if (!loggedIn)
+                JOptionPane.showMessageDialog(null, "Please try again.", "Login Failed", JOptionPane.WARNING_MESSAGE);
         }
 
-        // === Chat Menu ===
+        JOptionPane.showMessageDialog(null, "Welcome to QuickChat!", "QuickChat", JOptionPane.INFORMATION_MESSAGE);
+
+        // === CHAT MENU ===
         int choice = 0;
         while (choice != 3) {
-            System.out.println("\nMenu:");
-            System.out.println("1) Send messages");
-            System.out.println("2) Show recently sent messages (Coming Soon)");
-            System.out.println("3) Quit");
-            System.out.print("Enter your choice: ");
+            String input = JOptionPane.showInputDialog(null,
+                    "Menu:\n1) Send Messages\n2) Show Recently Sent Messages\n3) Quit",
+                    "QuickChat Menu", JOptionPane.QUESTION_MESSAGE);
 
-            String input = scanner.nextLine().trim();
+            if (input == null) break; // user clicked cancel
+
             try {
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid choice. Try again.");
+                JOptionPane.showMessageDialog(null, "Invalid input. Enter 1–3.", "Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
             switch (choice) {
-                case 1:
-                    // Ask how many messages to send
-                    int numMessages = 0;
-                    while (true) {
-                        System.out.print("How many messages would you like to send? ");
-                        String msgCountStr = scanner.nextLine();
-                        try {
-                            numMessages = Integer.parseInt(msgCountStr);
-                            if (numMessages > 0) break;
-                        } catch (Exception e) {}
-                        System.out.println("Enter a valid positive number.");
+                case 1 -> {
+                    String numStr = JOptionPane.showInputDialog(null, "How many messages would you like to send?");
+                    if (numStr == null) continue;
+                    int numMessages;
+                    try {
+                        numMessages = Integer.parseInt(numStr);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Invalid number entered.");
+                        continue;
                     }
 
                     for (int i = 0; i < numMessages; i++) {
-                        String recipient;
-                        while (true) {
-                            System.out.print("Enter recipient (+27XXXXXXXXX): ");
-                            recipient = scanner.nextLine().trim();
-                            Message tempMsg = new Message(recipient, "");
-                            if (tempMsg.checkRecipientCell()) break;
-                            System.out.println("Invalid recipient format. Try again.");
-                        }
+                        String recipient = JOptionPane.showInputDialog(null, "Enter Recipient (+27XXXXXXXXX):", "Recipient", JOptionPane.QUESTION_MESSAGE);
+                        String messageText = JOptionPane.showInputDialog(null, "Enter Message (<=250 chars):", "Message", JOptionPane.QUESTION_MESSAGE);
 
-                        String msgText;
-                        while (true) {
-                            System.out.print("Enter message (<=250 chars): ");
-                            msgText = scanner.nextLine();
-                            if (msgText.length() <= 250) break;
-                            System.out.println("Message too long. Please enter less than 250 characters.");
-                        }
+                        if (recipient == null || messageText == null) continue;
 
-                        Message messageObj = new Message(recipient, msgText);
-                        messageObj.sendMessageOption();
+                        Message msg = new Message(recipient, messageText);
+                        JOptionPane.showMessageDialog(null, msg.getRecipientValidationMessage());
+                        JOptionPane.showMessageDialog(null, msg.getMessageLengthStatus());
+                        msg.sendMessageOption();
                     }
-                    break;
 
-                case 2:
-                    System.out.println("\nSent Messages:");
-                    System.out.println(Message.printMessages());
-                    System.out.println("Total Sent: " + Message.returnTotalMessages());
-                    break;
+                    JOptionPane.showMessageDialog(null, "Total Messages Sent: " + Message.returnTotalMessages(), "Total", JOptionPane.INFORMATION_MESSAGE);
+                }
 
-                case 3:
-                    System.out.println("Exiting QuickChat. Goodbye!");
-                    break;
+                case 2 -> JOptionPane.showMessageDialog(null, Message.printMessages() + "\nTotal Sent: " + Message.returnTotalMessages(), "Sent Messages", JOptionPane.INFORMATION_MESSAGE);
 
-                default:
-                    System.out.println("Invalid choice. Try again.");
+                case 3 -> JOptionPane.showMessageDialog(null, "Exiting QuickChat. Goodbye!", "Exit", JOptionPane.INFORMATION_MESSAGE);
+
+                default -> JOptionPane.showMessageDialog(null, "Invalid choice. Try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        scanner.close();
+        System.exit(0);
     }
 }
