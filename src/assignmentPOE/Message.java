@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package assignmentPOE;
- 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
+
 import javax.swing.JOptionPane;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Message {
     private String messageID;
@@ -19,7 +17,7 @@ public class Message {
     private static int totalMessages = 0;
     private static List<Message> sentMessages = new ArrayList<>();
 
-    // Constructor
+    // === Constructors ===
     public Message(String recipient, String message) {
         this.messageID = generateMessageID();
         this.recipient = recipient;
@@ -27,48 +25,35 @@ public class Message {
         this.messageHash = createMessageHash();
     }
 
-    // Generate random 10-digit ID
+    // Constructor for loading from JSON (keeps IDs and hashes consistent)
+    public Message(String recipient, String message, String messageID, String messageHash) {
+        this.recipient = recipient;
+        this.message = message;
+        this.messageID = messageID;
+        this.messageHash = messageHash;
+    }
+
+    // === Generate random 10-digit ID ===
     private String generateMessageID() {
         Random rand = new Random();
         long id = 1000000000L + (long) (rand.nextDouble() * 8999999999L);
         return String.valueOf(id);
     }
 
-    //  Ensure message ID not more than 10 chars
+    // === Validation Methods ===
     public boolean checkMessageID() {
         return messageID.length() <= 10;
     }
 
-    //  Ensure recipient cell number starts with +27 and is exactly 12 characters long (+27XXXXXXXXX)
     public boolean checkRecipientCell() {
-        if (recipient == null) return false;
-        return recipient.matches("^\\+27\\d{9}$");
+        return recipient != null && recipient.matches("^\\+27\\d{9}$");
     }
 
-    // Returns a readable message for validation results
-    public String getRecipientValidationMessage() {
-        if (checkRecipientCell()) {
-            return "Cell phone number successfully captured.";
-        } else {
-            return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
-        }
-    }
-
-    //  Ensure message ≤ 250 chars
     public boolean checkMessageLength() {
         return message.length() <= 250;
     }
 
-    public String getMessageLengthStatus() {
-        if (checkMessageLength()) {
-            return "Message ready to send.";
-        } else {
-            int over = message.length() - 250;
-            return "Message exceeds 250 characters by " + over + ", please reduce size.";
-        }
-    }
-
-    //  Create Message Hash (first two digits of ID : total count : first and last words)
+    // === Message Hash ===
     public String createMessageHash() {
         String[] words = message.split("\\s+");
         String firstWord = words.length > 0 ? words[0] : "";
@@ -77,7 +62,7 @@ public class Message {
         return (idPrefix + ":" + totalMessages + ":" + firstWord + lastWord).toUpperCase();
     }
 
-    //  Send / Store / Discard Message
+    // === Send / Store / Discard Message ===
     public String sendMessageOption() {
         String[] options = {"Send", "Store", "Discard"};
         int choice = JOptionPane.showOptionDialog(
@@ -95,20 +80,16 @@ public class Message {
                 sentMessages.add(this);
                 showMessageDetails();
                 return "Message sent.";
-
             case 1: // Store
-                storeMessage();
                 return "Message stored for later.";
-
             case 2: // Discard
                 return "Message discarded.";
-
             default:
                 return "No action selected.";
         }
     }
 
-    //  Show message details (using JOptionPane)
+    // === Show message details ===
     public void showMessageDetails() {
         String info = "Message ID: " + messageID +
                 "\nMessage Hash: " + messageHash +
@@ -117,37 +98,11 @@ public class Message {
         JOptionPane.showMessageDialog(null, info, "Message Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    //  Store message in JSON file
-    public void storeMessage() {
-        JSONObject obj = new JSONObject();
-        obj.put("MessageID", messageID);
-        obj.put("MessageHash", messageHash);
-        obj.put("Recipient", recipient);
-        obj.put("Message", message);
-
-        try (FileWriter file = new FileWriter("messages.json", true)) {
-            file.write(obj.toJSONString() + "\n");
-            file.flush();
-        } catch (IOException e) {
-            System.out.println("Error storing message: " + e.getMessage());
-        }
-    }
-
-    // Return list of all sent messages
-    public static String printMessages() {
-        StringBuilder sb = new StringBuilder();
-        for (Message msg : sentMessages) {
-            sb.append("ID: ").append(msg.messageID)
-                    .append(" | Hash: ").append(msg.messageHash)
-                    .append(" | Recipient: ").append(msg.recipient)
-                    .append(" | Message: ").append(msg.message)
-                    .append("\n");
-        }
-        return sb.isEmpty() ? "No messages sent yet." : sb.toString();
-    }
-
-    //  Return total number of sent messages
-    public static int returnTotalMessages() {
-        return totalMessages;
-    }
+    // === Getters ===
+    public String getMessageID() { return messageID; }
+    public String getRecipient() { return recipient; }
+    public String getMessage() { return message; }
+    public String getMessageHash() { return messageHash; }
+    public static int returnTotalMessages() { return totalMessages; }
+    public static List<Message> getSentMessagesList() { return sentMessages; }
 }
