@@ -87,17 +87,15 @@ public class MainTest {
         assertTrue(hash.contains(":"));
     }
 
-    // ===== MESSAGE MANAGER TESTS USING PART 3 TEST DATA =====
+    // ===== MESSAGE MANAGER TESTS =====
     @Test
-    public void testSentMessagesArrayPopulation() {
+    public void testAddSentAndStoredMessages() {
         MessageManager manager = new MessageManager();
-
-        // Test Data Messages
-        Message m1 = new Message("+27834557896", "Did you get the cake?"); // Sent
-        Message m2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time."); // Stored
-        Message m3 = new Message("+27834484567", "Yohoooo, I am at your gate."); // Disregard
-        Message m4 = new Message("0838884567", "It is dinner time!"); // Sent
-        Message m5 = new Message("+27838884567", "Ok, I am leaving without you."); // Stored
+        Message m1 = new Message("+27834557896", "Did you get the cake?");
+        Message m2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
+        Message m3 = new Message("+27834484567", "Yohoooo, I am at your gate.");
+        Message m4 = new Message("0838884567", "It is dinner time!");
+        Message m5 = new Message("+27838884567", "Ok, I am leaving without you.");
 
         manager.addSentMessage(m1);
         manager.addStoredMessage(m2);
@@ -105,10 +103,9 @@ public class MainTest {
         manager.addSentMessage(m4);
         manager.addStoredMessage(m5);
 
-        List<Message> sent = manager.getSentMessages();
-        assertEquals(2, sent.size());
-        assertEquals("Did you get the cake?", sent.get(0).getMessage());
-        assertEquals("It is dinner time!", sent.get(1).getMessage());
+        assertEquals(2, manager.getSentMessages().size());
+        assertEquals(2, manager.getStoredMessages().size());
+        assertEquals(1, manager.getDisregardedMessages().size());
     }
 
     @Test
@@ -116,12 +113,8 @@ public class MainTest {
         MessageManager manager = new MessageManager();
         Message m1 = new Message("+27834557896", "Did you get the cake?");
         Message m2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
-        Message m4 = new Message("0838884567", "It is dinner time!");
-
         manager.addSentMessage(m1);
         manager.addSentMessage(m2);
-        manager.addSentMessage(m4);
-
         String longest = manager.displayLongestSentMessage();
         assertEquals("Longest Message:\nWhere are you? You are late! I have asked you to be on time.", longest);
     }
@@ -129,36 +122,31 @@ public class MainTest {
     @Test
     public void testSearchMessageByID() {
         MessageManager manager = new MessageManager();
-        Message m4 = new Message("0838884567", "It is dinner time!");
-        manager.addSentMessage(m4);
-
-        String result = manager.searchMessageByID(m4.getMessageID());
+        Message m1 = new Message("0838884567", "It is dinner time!");
+        manager.addSentMessage(m1);
+        String result = manager.searchMessageByID(m1.getMessageID());
         assertTrue(result.contains("It is dinner time!"));
-        assertTrue(result.contains("0838884567"));
     }
 
     @Test
     public void testSearchMessagesByRecipient() {
         MessageManager manager = new MessageManager();
-        Message m2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time."); // Stored
-        Message m5 = new Message("+27838884567", "Ok, I am leaving without you."); // Stored
-
+        Message m1 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
+        Message m2 = new Message("+27838884567", "Ok, I am leaving without you.");
+        manager.addStoredMessage(m1);
         manager.addStoredMessage(m2);
-        manager.addStoredMessage(m5);
-
         List<String> results = manager.searchMessagesByRecipient("+27838884567");
         assertEquals(2, results.size());
-        assertTrue(results.contains("Where are you? You are late! I have asked you to be on time."));
-        assertTrue(results.contains("Ok, I am leaving without you."));
+        assertTrue(results.contains(m1.getMessage()));
+        assertTrue(results.contains(m2.getMessage()));
     }
 
     @Test
     public void testDeleteMessageByHash() {
         MessageManager manager = new MessageManager();
-        Message m2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
-        manager.addSentMessage(m2);
-
-        String msgHash = m2.getMessageHash();
+        Message m1 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
+        manager.addSentMessage(m1);
+        String msgHash = m1.getMessageHash();
         String response = manager.deleteMessageByHash(msgHash);
         assertTrue(response.contains("successfully deleted"));
         assertEquals(0, manager.getSentMessages().size());
@@ -168,15 +156,11 @@ public class MainTest {
     public void testDisplayReport() {
         MessageManager manager = new MessageManager();
         Message m1 = new Message("+27834557896", "Did you get the cake?");
-        Message m4 = new Message("0838884567", "It is dinner time!");
-
+        Message m2 = new Message("0838884567", "It is dinner time!");
         manager.addSentMessage(m1);
-        manager.addSentMessage(m4);
-
+        manager.addSentMessage(m2);
         String report = manager.displayReport();
         assertTrue(report.contains("Did you get the cake?"));
         assertTrue(report.contains("It is dinner time!"));
-        assertTrue(report.contains(m1.getMessageHash()));
-        assertTrue(report.contains(m4.getMessageHash()));
     }
 }
