@@ -25,20 +25,22 @@ public class Main {
 
         // === Main Menu ===
         int choice = 0;
-        while (choice != 4) {
+        while (choice != 6) {
             String input = JOptionPane.showInputDialog(
                     "QuickChat Menu:\n" +
                             "1) Send Message\n" +
                             "2) Display Sent Messages\n" +
                             "3) Display Report\n" +
-                            "4) Quit\n\n" +
+                            "4) Search by Message ID\n" +
+                            "5) Search by Recipient\n" +
+                            "6) Quit\n\n" +
                             "Enter your choice:"
             );
             if (input == null) break; // user pressed cancel
             try {
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number 1-4.");
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number 1-6.");
                 continue;
             }
 
@@ -52,14 +54,30 @@ public class Main {
                 case 3:
                     JOptionPane.showMessageDialog(null, manager.displayReport());
                     break;
-                case 4:
-                    // Save stored messages before quitting
+                case 4: // Search by Message ID
+                    String id = JOptionPane.showInputDialog("Enter Message ID:");
+                    if (id != null) {
+                        JOptionPane.showMessageDialog(null, manager.searchMessageByID(id));
+                    }
+                    break;
+                case 5: // Search by Recipient
+                    String recipient = JOptionPane.showInputDialog("Enter Recipient Number (+27XXXXXXXXX):");
+                    if (recipient != null) {
+                        List<String> results = manager.searchMessagesByRecipient(recipient);
+                        if (results.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "No messages found for this recipient.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, String.join("\n", results));
+                        }
+                    }
+                    break;
+                case 6:
                     manager.saveStoredMessagesToJSON();
                     JOptionPane.showMessageDialog(null, "Exiting QuickChat. Goodbye!");
                     System.exit(0);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Invalid choice. Enter 1-4.");
+                    JOptionPane.showMessageDialog(null, "Invalid choice. Enter 1-6.");
             }
         }
     }
