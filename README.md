@@ -137,6 +137,90 @@ Demonstrates practical understanding of loops, strings, object-oriented design, 
 
 Is ready for CI/CD setup using GitHub Actions for automated testing.
 
+# Part 3 — Store Data and Display Task Report
+1. Purpose
+
+The purpose of this part of the application is to store, manage, and display messages in the QuickChat system. Users can send, store, disregard, and view messages, while the system keeps track of Message IDs and Message Hashes for management and reporting purposes.
+
+2. Features Implemented
+2.1 Arrays
+
+The following arrays were implemented in MessageManager:
+
+Array	Description
+Sent Messages	Contains all messages successfully sent.
+Disregarded Messages	Contains messages discarded by the user.
+Stored Messages	Contains messages saved for later; read from and written to JSON files.
+Message Hashes	Contains hashes of all messages for unique identification.
+Message IDs	Contains unique IDs of all messages.
+2.2 Functional Capabilities
+
+Using these arrays, the system can:
+
+Display the sender and recipient of all sent messages.
+
+Display the longest sent message.
+
+Search for a message by its Message ID and display its recipient and content.
+
+Search for all messages sent to a particular recipient.
+
+Delete a message using its Message Hash.
+
+Display a report listing all sent messages with full details (hash, recipient, content).
+
+3. Unit Tests Implemented
+
+JUnit tests ensure the correct functionality of the application:
+
+Login Tests
+
+Valid login.
+
+Invalid login.
+
+Registration validation (success and failure scenarios).
+
+Message Validation Tests
+
+Message length check (≤250 characters).
+
+Recipient validation (+27 format).
+
+Message ID and hash generation.
+
+Message Manager Tests
+
+Adding messages to Sent, Stored, and Disregarded arrays.
+
+Displaying the longest message.
+
+Searching by Message ID.
+
+Searching all messages for a specific recipient.
+
+Deleting a message using Message Hash.
+
+Displaying the report of all sent messages.
+
+Test data used (as per assignment instructions):
+
+Message	Recipient	Message Content	Flag
+1	+27834557896	Did you get the cake?	Sent
+2	+27838884567	Where are you? You are late! I have asked you to be on time.	Stored
+3	+27834484567	Yohoooo, I am at your gate.	Disregard
+4	0838884567	It is dinner time!	Sent
+5	+27838884567	Ok, I am leaving without you.	Stored
+4. Workflow
+
+User logs in or registers.
+
+Messages are sent, stored, or disregarded.
+
+Sent and stored messages are saved to JSON on exit.
+
+Users can display reports or search messages as required.
+
 
 # 📚 Reference List
 
@@ -170,10 +254,19 @@ GitHub Docs. 2024. GitHub Actions Documentation. [online] Available at: https://
 YouTube. 2022. Automate your tests with GitHub Actions. [video online] Available at: https://www.youtube.com/watch?v=b3cIRsVPLR4&t=282s
  [Accessed 13 October 2025].
 — (referenced in assignment brief for CI/CD setup guidance).
+Oracle, 2025. Class Scanner (Java Platform SE 17) [online]. Available at: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html
+ [Accessed 9 September 2025].
 
 The Independent Institute of Education (IIE). 2025. IIE Assessment Guidelines and Harvard Referencing Guide. [online] Available at: https://www.iie.ac.za/
  [Accessed 13 October 2025].
 — (used to ensure compliance with IIE Harvard referencing style and academic integrity).
+Erasmus, B., Rudansky-Kloppers, S. & Strydom, J. (eds.) 2023. Introduction to Business Management. 11th ed. Cape Town: Oxford University Press Southern Africa.
 
-Oracle, 2025. Class Scanner (Java Platform SE 17) [online]. Available at: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html
- [Accessed 9 September 2025].
+Oracle. 2025. The Java™ Tutorials: JUnit. [Online]. Available at: https://docs.oracle.com/javase/tutorial/junit/
+ [Accessed 18 November 2025].
+
+Geekulcha. 2024. About Us. [Online]. Available at: https://geekulcha.com
+ [Accessed 18 November 2025].
+
+JSON.org. 2025. JSON Simple Library Documentation. [Online]. Available at: https://www.json.org/json-en.html
+ [Accessed 17 November 2025].
